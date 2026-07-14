@@ -9,7 +9,7 @@ const searchForm = document.querySelector("[data-searchForm]");
 const searchInp = document.querySelector("[data-searchInput]");
 const apiErrorContainer = document.querySelector(".api-error-container");
 const loadingScreen = document.querySelector(".loading-container");
-
+const errorScreen = document.querySelector(".error-container");
 
 // initially variable need 
 let oldTab = userTab;
@@ -104,17 +104,23 @@ async function fetchUserWeatherByCoords(coordinates) {
     try {
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-           
+
         );
 
+        if (!response.ok) {
+            throw new Error("Unable to fetch weather");
+        }
+
         const data = await response.json();
+
         loadingScreen.classList.remove("active");
-        userInfoContainer.classList.add("active");
+        errorScreen.classList.remove("active");
         renderWeatherInfo(data);
     }
     catch (err) {
         loadingScreen.classList.remove("active");
-        // hw
+        userInfoContainer.classList.remove("active");
+        errorScreen.classList.add("active");
     }
 }
 
@@ -154,23 +160,36 @@ searchForm.addEventListener("submit", (e) => {
     if (cityName === "") return;
     else fetchUserWeatherByCity(cityName);
 })
+
+
 async function fetchUserWeatherByCity(city) {
     loadingScreen.classList.add("active");
     userInfoContainer.classList.remove("active");
     grantAccessContainer.classList.remove("active");
+    errorScreen.classList.remove("active");
 
     try {
+
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
         );
 
+        if (!response.ok) {
+            throw new Error("City not found");
+        }
+
         const data = await response.json();
+
         loadingScreen.classList.remove("active");
         renderWeatherInfo(data);
 
     }
-    catch {
-        // hw
-    }
+    catch (err) {
 
+        loadingScreen.classList.remove("active");
+        userInfoContainer.classList.remove("active");
+        errorScreen.classList.add("active");
+
+        console.error(err);
+    }
 }

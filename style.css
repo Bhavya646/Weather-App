@@ -259,14 +259,14 @@ h1 {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.form-Container input::focus {
-     box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.9);
+.form-Container input:focus {
+     box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.9);
     background-color: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.8);
 }
-.form-container:hover {
+/* .form-Container:hover {
     box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
-}
+} */
 .form-Container .btn {
     padding: unset;
     width: 40px;
@@ -276,4 +276,18 @@ h1 {
     align-items: center;
     border-radius: 100%;
     margin-bottom: 1rem;
+}
+
+.error-container{
+    display:none;
+}
+
+.error-container.active {
+    /* display: none; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0 10px;
+    margin-top: 2rem;
 }
